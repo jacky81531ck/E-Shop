@@ -6,12 +6,9 @@ $(document).ready(function() {
     $('#page').hide()
 
     var items = null
-    var pageCount = 6
-
-
+    var pageCount = 9
     var showItems = (page) => {
         if (items == null) return
-            // show the first and last item on page 
         var start = (page - 1) * pageCount
         var end = start + pageCount - 1
         $('#product-list').empty();
@@ -32,8 +29,8 @@ $(document).ready(function() {
     }
 
     var newPage = (n) => {
-        var pageNum = n / 20
-        pageNum = (n % 20 != 0) ? pageNum + 1 : pageNum
+        var pageNum = n / pageCount
+        pageNum = (n % pageCount != 0) ? pageNum + 1 : pageNum
 
         $('#page-number').empty()
 
@@ -61,20 +58,15 @@ $(document).ready(function() {
         $('#page-number').append($rli)
     }
 
-    $('#query').on('click', () => {
-        $.get('https://js.kchen.club/B12345678/query', (response) => {
+    $('#query').on('click', function() {
+        $.get('https://js.kchen.club/B12345678/query', function(response) {
             if (response) {
+                // 伺服器有回傳資料
                 if (response.result) {
-                    // Reload items
                     $('#product-list').empty();
+                    // 資料庫有回傳資料
                     items = response.items
-
-                    // ??????????????
-                    //for (var i = 0; i < items.length; i++) {
-                    //    newItem(items[i])
-                    //}
-
-                    // 加了分頁效果，預設顯示第一頁
+                        // 加了分頁效果，預設顯示第一頁
                     showItems(1)
 
                     // 顯示分頁和設定分頁的函式
