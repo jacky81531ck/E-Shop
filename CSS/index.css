@@ -67,6 +67,7 @@ body {
     transition-duration: 0.2s;
     transition-property: all;
     transition-timing-function: linear;
+    border-color: #28a745
 }
 
 .carousel {
@@ -76,4 +77,17 @@ body {
 .jumbotron-fluid {
     padding-top: 65px;
     padding-bottom: 35px;
+}
+
+ul {
+    margin-bottom: auto;
+}
+
+.page-link {
+    color: #28a745;
+}
+
+.page-item.active .page-link {
+    background-color: #28a745;
+    border-color: #28a745;
 }
