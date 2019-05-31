@@ -28,39 +28,58 @@ $(document).ready(function() {
         $('#product-list').append($col)
     }
 
-    var newPage = (n, page, s) => {
+    var newPage = (n, page) => {
         var pageNum = n / pageCount
         pageNum = (n % pageCount != 0) ? pageNum + 1 : pageNum
 
         $('#page-number').empty()
 
-        $la = $('<a>').attr('class', 'page-link').attr('href', '#').attr('tabindex', '-1').attr('aria-disabled', 'true').text('«')
-        $lli = $('<li>').attr('class', 'page-item').addClass('disabled').append($la)
+        // lli
+        if (page == 1) {
+            $la = $('<a>').attr('class', 'page-link').attr('href', '#').attr('tabindex', '-1').attr('aria-disabled', 'true').text('«')
+            $lli = $('<li>').attr('class', 'page-item').addClass('disabled').append($la)
+        } else {
+            $la = $('<a>').attr('class', 'page-link').attr('href', '#').text('«')
+            $lli = $('<li>').attr('class', 'page-item').append($la)
+        }
         $('#page-number').append($lli)
 
         // li
-        for (var i = s * 5 - 4; i <= s * 5 && i <= pageNum; i++) {
+        for (var i = 1; i <= pageNum; i++) {
             $a = $('<a>').attr('class', 'page-link').attr('href', '#').text(i)
 
             $a.on('click', function() {
                 page = $(this).text()
                 showItems(page)
-                newPage(n, page, s)
+                newPage(n, page)
             })
 
             var strActive = ((page == i) ? ' active' : '')
             $li = $('<li>').attr('class', 'page-item' + strActive).append($a)
             $('#page-number').append($li)
         }
-        $ra = $('<a>').attr('class', 'page-link').attr('href', '#').text('»')
-        $rli = $('<li>').attr('class', 'page-item').append($ra)
+
+        // rli
+        if (page == pageNum) {
+            $ra = $('<a>').attr('class', 'page-link').attr('href', '#').attr('tabindex', '-1').attr('aria-disabled', 'true').text('»')
+            $rli = $('<li>').attr('class', 'page-item').addClass('disabled').append($ra)
+        } else {
+            $ra = $('<a>').attr('class', 'page-link').attr('href', '#').text('»')
+            $rli = $('<li>').attr('class', 'page-item').append($ra)
+        }
         $('#page-number').append($rli)
 
+        // on click
+        $la.on('click', function() {
+            page--
+            showItems(page)
+            newPage(n, page)
+        })
+
         $ra.on('click', function() {
-            s++
-            showItems(page + 5)
-            console.log(s)
-            newPage(n, page + 5, s)
+            page++
+            showItems(page)
+            newPage(n, page)
         })
     }
 
@@ -77,7 +96,7 @@ $(document).ready(function() {
 
                     // 顯示分頁和設定分頁的函式
                     $('#page').show()
-                    newPage(items.length, 1, 1)
+                    newPage(items.length, 1)
 
                 } else {
                     $('#message').text('查無相關資料')
