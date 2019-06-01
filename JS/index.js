@@ -39,6 +39,7 @@ $(() => {
 
     var newPage = (n, page, s) => {
         $('#page-number').empty()
+        $('#page-indicate').empty()
 
         // dlli
         if (s == 1) {
@@ -96,6 +97,7 @@ $(() => {
             $drli = $('<li>').attr('class', 'page-item').append($dra)
         }
         $('#page-number').append($drli)
+        $('#page-indicate').append($('<p>').text(page + '/' + n))
 
         // on click
         $dla.on('click', function() {
@@ -159,33 +161,37 @@ $(() => {
     })
 
     $('#insertButton').on('click', function() {
-
         // Get data
         var data = {
-                result: true,
-                item: {
-                    name: $('#inputProductName').val(),
-                    price: Number($('#inputProductPrice').val()),
-                    count: +$('#inputProductCount').val(),
-                    image: $('#inputProductImage').val(),
-                }
+            result: true,
+            item: {
+                name: $('#inputProductName').val(),
+                price: Number($('#inputProductPrice').val()),
+                count: +$('#inputProductCount').val(),
+                image: $('#inputProductImage').val(),
             }
-            // 新增商品
-        $.post('https://js.kchen.club/B04109002/insert', data, function(response) {
-            if (response) {
-                if (response.result) {
+        }
+        $.each((data.item),
+            function(key, value) {
+                if (value == '') {
+                    data.result = false
+                }
+            })
+
+        if (data.result) {
+            $.post('https://js.kchen.club/B04109002/insert', data, function(response) {
+                if (response) {
                     $('#message').text('Upload Success')
                     $('#dialog').modal('show')
                 } else {
-                    $('#message').text('Upload Fail')
+                    $('#message').text('System Error')
                     $('#dialog').modal('show')
                 }
-            } else {
-                $('#message').text('System Error')
-                $('#dialog').modal('show')
-            }
-            console.log(response)
-        }, "json")
-    })
+            }, "json")
+        } else {
+            $('#message').text('Upload Fail (please fill out the form completely)')
+            $('#dialog').modal('show')
+        }
 
+    })
 })
