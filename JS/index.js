@@ -2,8 +2,14 @@
 $(document).ready(function() {
 
     // 清空 product-list
-    $('#product-list').empty();
+    $('#product-list').empty()
     $('#page').hide()
+    $('#insert').hide()
+    $('#insertLink').on('click', function() {
+        $('#index').hide()
+        $('#insert').show()
+    })
+
 
     var items = null
     var pageCount = 9
@@ -13,8 +19,12 @@ $(document).ready(function() {
         var end = start + pageCount - 1
         $('#product-list').empty();
         for (var i = start; i <= end; i++) {
+            if (items[i] == null) {
+                return
+            }
             newItem(items[i])
         }
+
     }
 
     var newItem = (item) => {
@@ -29,8 +39,11 @@ $(document).ready(function() {
     }
 
     var newPage = (n, page) => {
+
+        console.log('inNewPage')
         var pageNum = n / pageCount
         pageNum = (n % pageCount != 0) ? pageNum + 1 : pageNum
+        pageNum = Math.floor(pageNum)
 
         $('#page-number').empty()
 
@@ -84,6 +97,8 @@ $(document).ready(function() {
     }
 
     $('#query').on('click', function() {
+        $('#insert').hide()
+        $('#index').show()
         $.get('https://js.kchen.club/B04109002/query', function(response) {
             if (response) {
                 // 伺服器有回傳資料
@@ -99,11 +114,11 @@ $(document).ready(function() {
                     newPage(items.length, 1)
 
                 } else {
-                    $('#message').text('查無相關資料')
+                    $('#message').text('No Related Item')
                     $('#dialog').modal('show')
                 }
             } else {
-                $('#message').text('伺服器出錯')
+                $('#message').text('Server Error')
                 $('#dialog').modal('show')
             }
 
