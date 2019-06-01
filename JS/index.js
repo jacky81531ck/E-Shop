@@ -123,7 +123,6 @@ $(() => {
         $dra.on('click', function() {
             s++
             page = (s * 5) - 4
-            if (page > n) { page = n }
             showItems(page)
             newPage(n, page, s)
 
