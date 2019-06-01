@@ -52,8 +52,8 @@ body {
     background-origin: padding-box;
     margin-bottom: 20px;
     margin-left: 14px;
-    margin-right: 0px;
-    margin-top: 0px;
+    margin-right: 14px;
+    margin-top: 12px;
     padding-top: 34px;
     padding-bottom: 20px;
     padding-left: 0px;
@@ -90,4 +90,5 @@ ul {
 .page-item.active .page-link {
     background-color: #28a745;
     border-color: #28a745;
+    color: #fff;
 }
