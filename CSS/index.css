@@ -92,3 +92,10 @@ ul {
     border-color: #28a745;
     color: #fff;
 }
+
+#page-indicate {
+    margin-top: 7px;
+    margin-bottom: -12px;
+    color: #9E9E9E;
+    text-align: center;
+}
