@@ -1,7 +1,7 @@
-// 當文件已經全載入至記憶體時，開始執行程式
-$(document).ready(function() {
+// DOM Ready
+$(() => {
 
-    // 清空 product-list
+    // Initialize
     $('#product-list').empty()
     $('#page').hide()
     $('#insert').hide()
@@ -39,8 +39,6 @@ $(document).ready(function() {
     }
 
     var newPage = (n, page) => {
-
-        console.log('inNewPage')
         var pageNum = n / pageCount
         pageNum = (n % pageCount != 0) ? pageNum + 1 : pageNum
         pageNum = Math.floor(pageNum)
@@ -101,15 +99,11 @@ $(document).ready(function() {
         $('#index').show()
         $.get('https://js.kchen.club/B04109002/query', function(response) {
             if (response) {
-                // 伺服器有回傳資料
                 if (response.result) {
-                    $('#product-list').empty();
-                    // 資料庫有回傳資料
+                    $('#product-list').empty()
                     items = response.items
-                        // 加了分頁效果，預設顯示第一頁
-                    showItems(1)
 
-                    // 顯示分頁和設定分頁的函式
+                    showItems(1)
                     $('#page').show()
                     newPage(items.length, 1)
 
@@ -121,7 +115,37 @@ $(document).ready(function() {
                 $('#message').text('Server Error')
                 $('#dialog').modal('show')
             }
+            console.log(response)
+        }, "json")
+    })
 
+    $('#insertButton').on('click', function() {
+
+        // 取得商品資料
+        var data = {
+                result: true,
+                item: {
+                    name: $('#inputProductName').val(),
+                    price: Number($('#inputProductPrice').val()),
+                    count: +$('#inputProductCount').val(),
+                    image: $('#inputProductImage').val(),
+                }
+            }
+            // 新增商品
+        $.post('https://js.kchen.club/B04109002/insert', data, function(response) {
+            if (response) {
+                // 伺服器有回傳資料
+                if (response.result) {
+                    $('#message').text('Upload Success')
+                    $('#dialog').modal('show')
+                } else {
+                    $('#message').text('Upload Fail')
+                    $('#dialog').modal('show')
+                }
+            } else {
+                $('#message').text('System Error')
+                $('#dialog').modal('show')
+            }
             console.log(response)
         }, "json")
     })
