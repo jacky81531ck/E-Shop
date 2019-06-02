@@ -177,19 +177,24 @@ $(() => {
                     data.result = false
                 }
             })
-
         if (data.result) {
             $.post('https://js.kchen.club/B04109002/insert', data, function(response) {
                 if (response) {
-                    $('#message').text('Upload Success')
-                    $('#dialog').modal('show')
+                    if (response.result) {
+                        $('#message').text('Upload Success')
+                        $('#dialog').modal('show')
+                    } else {
+                        $('#message').text('Upload Fail')
+                        $('#dialog').modal('show')
+                    }
+
                 } else {
                     $('#message').text('System Error')
                     $('#dialog').modal('show')
                 }
             }, "json")
         } else {
-            $('#message').text('Upload Fail (please fill out the form completely)')
+            $('#message').text('Please fill out the form completely.')
             $('#dialog').modal('show')
         }
 
